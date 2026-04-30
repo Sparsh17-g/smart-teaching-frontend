@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
   ArrowLeft, User, Clock, Eye,
@@ -25,6 +25,20 @@ function getYouTubeId(url) {
 export default function VideoPlayerPage({ video, onBack, role, onDelete }) {
   const [liked,  setLiked]  = useState(false)
   const [saved,  setSaved]  = useState(false)
+
+  // Increment view count when video opens
+useEffect(() => {
+  const updateViews = async () => {
+    try {
+      await fetch(`https://smart-teaching-uk9o.onrender.com/api/videos/${video._id}/view`, {
+        method: 'PUT'
+      })
+    } catch (err) {
+      console.log('View count error', err)
+    }
+  }
+  if (video._id) updateViews()
+}, [video._id])
 
   const youtubeId = getYouTubeId(video.url)
 

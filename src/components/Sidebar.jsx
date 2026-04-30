@@ -5,9 +5,10 @@ import {
 } from 'lucide-react'
 
 const NAV_ITEMS = [
-  { id: 'home',    icon: LayoutDashboard, label: 'Home' },
-  { id: 'videos',  icon: PlayCircle,      label: 'Videos' },
-  { id: 'notices', icon: Bell,            label: 'Notice Board' },
+  { id: 'home',    icon: LayoutDashboard, label: 'Home',         color: '#a5b4fc' },
+  { id: 'videos',  icon: PlayCircle,      label: 'Videos',       color: '#6ee7b7' },
+  { id: 'notices', icon: Bell,            label: 'Notice Board', color: '#fcd34d' },
+  { id: 'profile', icon: User,            label: 'Profile',      color: '#f9a8d4' },
 ]
 
 const TEACHER_ONLY = [

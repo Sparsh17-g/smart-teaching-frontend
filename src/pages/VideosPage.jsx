@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { Search, X } from 'lucide-react'
 import VideoCard from '../components/VideoCard'
 import { VideoCardSkeleton } from '../components/Skeleton'
 import EmptyState from '../components/EmptyState'
@@ -9,6 +10,7 @@ const FILTERS = ['All', ...SUBJECTS]
 
 export default function VideosPage({ videos, onVideoClick, role, onDelete }) {
   const [filter,  setFilter]  = useState('All')
+  const [search,  setSearch]  = useState('')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -16,9 +18,14 @@ export default function VideosPage({ videos, onVideoClick, role, onDelete }) {
     return () => clearTimeout(t)
   }, [])
 
-  const filtered = filter === 'All'
-    ? videos
-    : videos.filter(v => v.subject === filter)
+  const filtered = videos.filter(v => {
+    const matchFilter = filter === 'All' || v.subject === filter
+    const matchSearch = !search ||
+      v.title?.toLowerCase().includes(search.toLowerCase()) ||
+      v.subject?.toLowerCase().includes(search.toLowerCase()) ||
+      v.instructor?.toLowerCase().includes(search.toLowerCase())
+    return matchFilter && matchSearch
+  })
 
   return (
     <div>
@@ -34,6 +41,49 @@ export default function VideosPage({ videos, onVideoClick, role, onDelete }) {
         <p style={{ color: 'var(--text-3)', fontSize: '14px' }}>
           {videos.length} lectures available
         </p>
+      </motion.div>
+
+      {/* Search bar */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.05 }}
+        style={{ position: 'relative', marginBottom: '16px' }}
+      >
+        <Search
+          size={15}
+          style={{
+            position: 'absolute',
+            left: '14px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            color: 'var(--text-3)',
+          }}
+        />
+        <input
+          className="input-field"
+          style={{ paddingLeft: '42px', paddingRight: search ? '42px' : '16px' }}
+          placeholder="Search by title, subject, instructor..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+        {search && (
+          <button
+            onClick={() => setSearch('')}
+            style={{
+              position: 'absolute',
+              right: '14px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              color: 'var(--text-3)',
+            }}
+          >
+            <X size={15} />
+          </button>
+        )}
       </motion.div>
 
       {/* Filter pills */}
@@ -64,6 +114,13 @@ export default function VideosPage({ videos, onVideoClick, role, onDelete }) {
         ))}
       </motion.div>
 
+      {/* Results count */}
+      {search && (
+        <p style={{ fontSize: '13px', color: 'var(--text-3)', marginBottom: '16px' }}>
+          Found <strong style={{ color: 'var(--text-1)' }}>{filtered.length}</strong> results for "{search}"
+        </p>
+      )}
+
       {/* Grid */}
       {loading ? (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '18px' }}>
@@ -73,7 +130,7 @@ export default function VideosPage({ videos, onVideoClick, role, onDelete }) {
         <EmptyState
           icon="PlayCircle"
           title="No Videos Found"
-          description="No videos match the selected subject filter."
+          description={search ? `No videos match "${search}"` : 'No videos match the selected filter.'}
         />
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '18px' }}>

@@ -1,27 +1,28 @@
 import { useState, useEffect, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Sidebar from '../components/Sidebar'
-import Navbar  from '../components/Navbar'
-import HomePage        from './HomePage'
-import VideosPage      from './VideosPage'
+import Navbar from '../components/Navbar'
+import HomePage from './HomePage'
+import VideosPage from './VideosPage'
 import VideoPlayerPage from './VideoPlayerPage'
-import NoticesPage     from './NoticesPage'
-import UploadPage      from './UploadPage'
+import NoticesPage from './NoticesPage'
+import UploadPage from './UploadPage'
 import * as api from '../services/api'
+import ProfilePage from './ProfilePage'
 
 const pageVariants = {
   initial: { opacity: 0, y: 12 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-  exit:    { opacity: 0, y: -8, transition: { duration: 0.2 } },
+  exit: { opacity: 0, y: -8, transition: { duration: 0.2 } },
 }
 
 export default function DashboardLayout({ user, role, onLogout }) {
-  const [activeNav,     setActiveNav]     = useState('home')
-  const [sidebarOpen,   setSidebarOpen]   = useState(true)
+  const [activeNav, setActiveNav] = useState('home')
+  const [sidebarOpen, setSidebarOpen] = useState(true)
   const [selectedVideo, setSelectedVideo] = useState(null)
-  const [videos,        setVideos]        = useState([])
-  const [notices,       setNotices]       = useState([])
-  const [dataLoading,   setDataLoading]   = useState(true)
+  const [videos, setVideos] = useState([])
+  const [notices, setNotices] = useState([])
+  const [dataLoading, setDataLoading] = useState(true)
 
   // Load data from backend
   const loadData = useCallback(async () => {
@@ -178,6 +179,13 @@ export default function DashboardLayout({ user, role, onLogout }) {
               exit="exit"
             >
               {renderPage()}
+              case 'profile':
+              return (
+              <ProfilePage
+                user={user}
+                role={role}
+              />
+              )
             </motion.div>
           </AnimatePresence>
         </main>
