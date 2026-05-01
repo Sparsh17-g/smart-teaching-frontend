@@ -114,3 +114,49 @@ export async function signup(name, email, password) {
     throw new Error(err.message)
   }
 }
+// ── Comments ─────────────────────────────
+export async function fetchComments(videoId) {
+  try {
+    const res = await fetch(`${BASE}/comments/${videoId}`)
+    const data = await res.json()
+    return Array.isArray(data) ? data : []
+  } catch (err) {
+    console.log('Error fetching comments', err)
+    return []
+  }
+}
+
+export async function addComment(commentData) {
+  try {
+    const res = await fetch(`${BASE}/comments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(commentData)
+    })
+    return await res.json()
+  } catch (err) {
+    console.log('Error adding comment', err)
+  }
+}
+
+export async function deleteComment(id) {
+  try {
+    const res = await fetch(`${BASE}/comments/${id}`, {
+      method: 'DELETE'
+    })
+    return await res.json()
+  } catch (err) {
+    console.log('Error deleting comment', err)
+  }
+}
+
+export async function likeComment(id) {
+  try {
+    const res = await fetch(`${BASE}/comments/${id}/like`, {
+      method: 'PUT'
+    })
+    return await res.json()
+  } catch (err) {
+    console.log('Error liking comment', err)
+  }
+}

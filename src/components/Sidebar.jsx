@@ -3,12 +3,17 @@ import {
   LayoutDashboard, PlayCircle, Bell, Upload,
   GraduationCap, LogOut, ChevronLeft,User
 } from 'lucide-react'
+import {
+  LayoutDashboard, PlayCircle, Bell, Upload,
+  GraduationCap, LogOut, ChevronLeft, Sparkles, User, Calendar,
+} from 'lucide-react'
 
 const NAV_ITEMS = [
-  { id: 'home',    icon: LayoutDashboard, label: 'Home',         color: '#a5b4fc' },
-  { id: 'videos',  icon: PlayCircle,      label: 'Videos',       color: '#6ee7b7' },
-  { id: 'notices', icon: Bell,            label: 'Notice Board', color: '#fcd34d' },
-  { id: 'profile', icon: User,            label: 'Profile',      color: '#f9a8d4' },
+  { id: 'home',      icon: LayoutDashboard, label: 'Home',         color: '#a5b4fc' },
+  { id: 'videos',    icon: PlayCircle,      label: 'Videos',       color: '#6ee7b7' },
+  { id: 'notices',   icon: Bell,            label: 'Notice Board', color: '#fcd34d' },
+  { id: 'timetable', icon: Calendar,        label: 'Timetable',    color: '#f9a8d4' },
+  { id: 'profile',   icon: User,            label: 'Profile',      color: '#fb923c' },
 ]
 
 const TEACHER_ONLY = [

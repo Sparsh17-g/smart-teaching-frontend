@@ -1,28 +1,29 @@
 import { useState, useEffect, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Sidebar from '../components/Sidebar'
-import Navbar  from '../components/Navbar'
-import HomePage        from './HomePage'
-import VideosPage      from './VideosPage'
+import Navbar from '../components/Navbar'
+import HomePage from './HomePage'
+import VideosPage from './VideosPage'
 import VideoPlayerPage from './VideoPlayerPage'
-import NoticesPage     from './NoticesPage'
-import UploadPage      from './UploadPage'
-import ProfilePage     from './ProfilePage'
+import NoticesPage from './NoticesPage'
+import UploadPage from './UploadPage'
+import ProfilePage from './ProfilePage'
 import * as api from '../services/api'
+import TimetablePage from './TimetablePage'
 
 const pageVariants = {
   initial: { opacity: 0, y: 12 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-  exit:    { opacity: 0, y: -8, transition: { duration: 0.2 } },
+  exit: { opacity: 0, y: -8, transition: { duration: 0.2 } },
 }
 
 export default function DashboardLayout({ user, role, onLogout }) {
-  const [activeNav,     setActiveNav]     = useState('home')
-  const [sidebarOpen,   setSidebarOpen]   = useState(true)
+  const [activeNav, setActiveNav] = useState('home')
+  const [sidebarOpen, setSidebarOpen] = useState(true)
   const [selectedVideo, setSelectedVideo] = useState(null)
-  const [videos,        setVideos]        = useState([])
-  const [notices,       setNotices]       = useState([])
-  const [dataLoading,   setDataLoading]   = useState(true)
+  const [videos, setVideos] = useState([])
+  const [notices, setNotices] = useState([])
+  const [dataLoading, setDataLoading] = useState(true)
 
   const loadData = useCallback(async () => {
     setDataLoading(true)
@@ -99,6 +100,7 @@ export default function DashboardLayout({ user, role, onLogout }) {
         onBack={() => setSelectedVideo(null)}
         role={role}
         onDelete={handleDeleteVideo}
+        user={user}
       />
     )
   }
@@ -149,6 +151,12 @@ export default function DashboardLayout({ user, role, onLogout }) {
             role={role}
           />
         )
+      case 'timetable':
+        return (
+          <TimetablePage
+            role={role}
+          />
+        )
       default:
         return null
     }
@@ -170,6 +178,8 @@ export default function DashboardLayout({ user, role, onLogout }) {
           role={role}
           onToggleSidebar={() => setSidebarOpen(p => !p)}
           onLogout={onLogout}
+          notices={notices}
+          videos={videos}
         />
         <main style={{ flex: 1, overflowY: 'auto', padding: '24px 28px' }}>
           <AnimatePresence mode="wait">

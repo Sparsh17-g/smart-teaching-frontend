@@ -1,8 +1,9 @@
+import Notifications from './Notifications'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, Search, Bell, ChevronDown, LogOut, User, Settings } from 'lucide-react'
 
-export default function Navbar({ user, role, onToggleSidebar, onLogout }) {
+export default function Navbar({ user, role, onToggleSidebar, onLogout, notices = [], videos = [] }) {
   const [profileOpen, setProfileOpen] = useState(false)
   const initial = (user?.name || 'U').charAt(0).toUpperCase()
 
