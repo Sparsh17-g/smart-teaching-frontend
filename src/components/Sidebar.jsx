@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   LayoutDashboard, PlayCircle, Bell, Upload,
-  GraduationCap, LogOut, ChevronLeft,
+  GraduationCap, LogOut, ChevronLeft,User
 } from 'lucide-react'
 
 const NAV_ITEMS = [

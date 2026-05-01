@@ -2,10 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { User, Mail, Shield, Save, CheckCircle } from 'lucide-react'
 import Button from '../components/Button'
-import {
-  LayoutDashboard, PlayCircle, Bell, Upload,
-  GraduationCap, LogOut, ChevronLeft, Sparkles, User,
-} from 'lucide-react'
+
 
 export default function ProfilePage({ user, role }) {
   const [name,    setName]    = useState(user?.name || '')

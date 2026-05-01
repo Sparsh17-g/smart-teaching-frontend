@@ -4,7 +4,7 @@ import { StatCardSkeleton } from '../components/Skeleton'
 
 const container = {
   hidden: {},
-  show:   { transition: { staggerChildren: 0.08 } },
+  show: { transition: { staggerChildren: 0.08 } },
 }
 const item = {
   hidden: { opacity: 0, y: 20 },
@@ -13,10 +13,10 @@ const item = {
 
 export default function HomePage({ role, user, videos, notices, onVideoClick, setActiveNav, loading }) {
   const stats = [
-    { label: 'Total Videos',    value: videos.length, icon: PlayCircle, color: '#4f46e5' },
-    { label: 'Active Notices',  value: notices.length, icon: Bell,       color: '#10b981' },
-    { label: 'Students',        value: 142,            icon: Users,      color: '#f59e0b' },
-    { label: 'Subjects',        value: 8,              icon: BookOpen,   color: '#ec4899' },
+    { label: 'Total Videos',   value: videos.length,   icon: PlayCircle, color: '#5b52f0' },
+    { label: 'Active Notices', value: notices.length,  icon: Bell,       color: '#10b981' },
+    { label: 'Students',       value: 142,             icon: Users,      color: '#f59e0b' },
+    { label: 'Subjects',       value: 8,               icon: BookOpen,   color: '#ec4899' },
   ]
 
   const greeting = () => {
@@ -32,19 +32,19 @@ export default function HomePage({ role, user, videos, notices, onVideoClick, se
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-7"
+        style={{ marginBottom: '28px' }}
       >
-        <h1 className="text-2xl md:text-3xl font-display font-bold mb-1">
+        <h1 className="font-display font-bold" style={{ fontSize: '32px', marginBottom: '4px' }}>
           {greeting()}, {user?.name?.split(' ')[0] || 'there'} 👋
         </h1>
-        <p className="text-slate-500 text-sm">
+        <p style={{ color: 'var(--text-3)', fontSize: '14px' }}>
           Here's what's happening on your platform today.
         </p>
       </motion.div>
 
       {/* Stats grid */}
       {loading ? (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 mb-7">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '14px', marginBottom: '28px' }}>
           {[1,2,3,4].map(i => <StatCardSkeleton key={i} />)}
         </div>
       ) : (
@@ -52,67 +52,88 @@ export default function HomePage({ role, user, videos, notices, onVideoClick, se
           variants={container}
           initial="hidden"
           animate="show"
-          className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 mb-7"
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '14px', marginBottom: '28px' }}
         >
           {stats.map(s => (
-            <motion.div key={s.label} variants={item} className="glass rounded-2xl p-5">
-              <div className="flex justify-between items-start mb-3">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+            <motion.div
+              key={s.label}
+              variants={item}
+              className="glass"
+              style={{ borderRadius: '16px', padding: '20px', cursor: 'default' }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+                <span style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-3)' }}>
                   {s.label}
                 </span>
-                <div
-                  className="w-8 h-8 rounded-xl flex items-center justify-center"
-                  style={{ background: `${s.color}22` }}
-                >
+                <div style={{ width: 32, height: 32, borderRadius: '10px', background: `${s.color}22`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <s.icon size={16} style={{ color: s.color }} />
                 </div>
               </div>
-              <div className="text-3xl font-bold text-slate-100">{s.value}</div>
+              <div style={{ fontSize: '36px', fontWeight: 800, color: 'var(--text-1)', fontFamily: 'Outfit, sans-serif' }}>
+                {s.value}
+              </div>
             </motion.div>
           ))}
         </motion.div>
       )}
 
       {/* Recent videos + latest notices */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+
         {/* Recent Videos */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="glass rounded-2xl p-5"
+          className="glass"
+          style={{ borderRadius: '16px', padding: '20px' }}
         >
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-semibold text-sm">Recent Videos</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <h3 style={{ fontWeight: 600, fontSize: '15px' }}>Recent Videos</h3>
             <button
               onClick={() => setActiveNav('videos')}
-              className="text-xs text-brand-400 hover:text-brand-200 transition-colors"
+              style={{ fontSize: '12px', color: '#a5b4fc', background: 'none', border: 'none', cursor: 'pointer' }}
             >
               View all →
             </button>
           </div>
 
-          <div className="space-y-2">
-            {videos.slice(0, 4).map(v => (
-              <div
-                key={v.id}
-                onClick={() => onVideoClick(v)}
-                className="flex gap-3 p-2 rounded-xl cursor-pointer
-                           hover:bg-white/[0.04] transition-colors duration-150"
-              >
-                <img
-                  src={v.thumbnail}
-                  alt=""
-                  className="w-16 h-10 rounded-lg object-cover shrink-0"
-                  onError={e => { e.target.style.background = '#1a1a3e'; e.target.removeAttribute('src') }}
-                />
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-slate-200 truncate">{v.title}</p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">{v.duration} · {v.views} views</p>
+          {videos.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '20px', color: 'var(--text-3)', fontSize: '13px' }}>
+              No videos yet
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {videos.slice(0, 4).map(v => (
+                <div
+                  key={v._id || v.id}
+                  onClick={() => onVideoClick(v)}
+                  style={{
+                    display: 'flex', gap: '12px', padding: '8px',
+                    borderRadius: '10px', cursor: 'pointer',
+                    transition: 'background 0.15s ease',
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                >
+                  <img
+                    src={v.thumbnail || `https://picsum.photos/seed/${v._id}/400/225`}
+                    alt=""
+                    style={{ width: 64, height: 40, borderRadius: '8px', objectFit: 'cover', flexShrink: 0 }}
+                    onError={e => { e.target.style.background = '#1a1a3e'; e.target.removeAttribute('src') }}
+                  />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-1)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {v.title}
+                    </p>
+                    <p style={{ fontSize: '11px', color: 'var(--text-3)', marginTop: '2px' }}>
+                      {v.duration} · {v.views} views
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </motion.div>
 
         {/* Latest Notices */}
@@ -120,39 +141,50 @@ export default function HomePage({ role, user, videos, notices, onVideoClick, se
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="glass rounded-2xl p-5"
+          className="glass"
+          style={{ borderRadius: '16px', padding: '20px' }}
         >
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-semibold text-sm">Latest Notices</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <h3 style={{ fontWeight: 600, fontSize: '15px' }}>Latest Notices</h3>
             <button
               onClick={() => setActiveNav('notices')}
-              className="text-xs text-brand-400 hover:text-brand-200 transition-colors"
+              style={{ fontSize: '12px', color: '#a5b4fc', background: 'none', border: 'none', cursor: 'pointer' }}
             >
               View all →
             </button>
           </div>
 
-          <div className="space-y-2">
-            {notices.slice(0, 4).map(n => (
-              <div
-                key={n.id}
-                className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]"
-              >
-                <div className="flex justify-between gap-2 mb-1">
-                  <p className="text-xs font-medium text-slate-200 truncate flex-1">{n.title}</p>
-                  <span
-                    className={`tag shrink-0 ${
-                      n.priority === 'high' ? 'tag-amber' :
-                      n.priority === 'medium' ? 'tag-purple' : 'tag-green'
-                    }`}
-                  >
-                    {n.priority}
-                  </span>
+          {notices.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '20px', color: 'var(--text-3)', fontSize: '13px' }}>
+              No notices yet
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {notices.slice(0, 4).map(n => (
+                <div
+                  key={n._id || n.id}
+                  style={{
+                    padding: '10px 12px',
+                    borderRadius: '10px',
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '1px solid rgba(255,255,255,0.05)',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '8px', marginBottom: '4px' }}>
+                    <p style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-1)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+                      {n.title}
+                    </p>
+                    <span className={`tag ${n.priority === 'high' ? 'tag-amber' : n.priority === 'medium' ? 'tag-purple' : 'tag-green'}`}>
+                      {n.priority}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: '11px', color: 'var(--text-3)' }}>
+                    {n.date || new Date(n.createdAt).toLocaleDateString()}
+                  </p>
                 </div>
-                <p className="text-[11px] text-slate-500">{n.date}</p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </motion.div>
       </div>
     </div>
