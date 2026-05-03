@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Bell, X, CheckCheck, Video, FileText } from 'lucide-react'
 import Notifications from './Notifications'
 
-export default function Notifications({ notices, videos }) {
+export default function NotificationBell({ notices, videos }) {
   const [open,     setOpen]     = useState(false)
   const [read,     setRead]     = useState([])
   const [notifications, setNotifications] = useState([])

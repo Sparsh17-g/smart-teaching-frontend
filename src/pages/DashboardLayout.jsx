@@ -1,29 +1,23 @@
 import { useState, useEffect, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import Sidebar from '../components/Sidebar'
-import Navbar from '../components/Navbar'
-import HomePage from './HomePage'
-import VideosPage from './VideosPage'
+import Sidebar       from '../components/Sidebar'
+import Navbar        from '../components/Navbar'
+import HomePage      from './HomePage'
+import VideosPage    from './VideosPage'
 import VideoPlayerPage from './VideoPlayerPage'
-import NoticesPage from './NoticesPage'
-import UploadPage from './UploadPage'
-import ProfilePage from './ProfilePage'
-import * as api from '../services/api'
+import NoticesPage   from './NoticesPage'
+import UploadPage    from './UploadPage'
+import ProfilePage   from './ProfilePage'
 import TimetablePage from './TimetablePage'
-
-const pageVariants = {
-  initial: { opacity: 0, y: 12 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-  exit: { opacity: 0, y: -8, transition: { duration: 0.2 } },
-}
+import * as api from '../services/api'
 
 export default function DashboardLayout({ user, role, onLogout }) {
-  const [activeNav, setActiveNav] = useState('home')
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [activeNav,     setActiveNav]     = useState('home')
+  const [sidebarOpen,   setSidebarOpen]   = useState(true)
   const [selectedVideo, setSelectedVideo] = useState(null)
-  const [videos, setVideos] = useState([])
-  const [notices, setNotices] = useState([])
-  const [dataLoading, setDataLoading] = useState(true)
+  const [videos,        setVideos]        = useState([])
+  const [notices,       setNotices]       = useState([])
+  const [dataLoading,   setDataLoading]   = useState(true)
 
   const loadData = useCallback(async () => {
     setDataLoading(true)
@@ -46,12 +40,6 @@ export default function DashboardLayout({ user, role, onLogout }) {
   useEffect(() => {
     loadData()
   }, [loadData])
-
-  useEffect(() => {
-    if (activeNav === 'videos' || activeNav === 'notices' || activeNav === 'home') {
-      loadData()
-    }
-  }, [activeNav])
 
   const handleAddVideo = (data) => {
     if (data) setVideos(p => [data, ...p])
@@ -163,7 +151,14 @@ export default function DashboardLayout({ user, role, onLogout }) {
   }
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#04040f' }}>
+    <div style={{
+      display: 'flex',
+      minHeight: '100vh',
+      width: '100%',
+      background: '#04040f',
+      color: '#f0f2ff',
+    }}>
+      {/* Sidebar */}
       <Sidebar
         role={role}
         activeNav={activeNav}
@@ -172,7 +167,16 @@ export default function DashboardLayout({ user, role, onLogout }) {
         onToggle={() => setSidebarOpen(p => !p)}
         onLogout={onLogout}
       />
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+
+      {/* Main */}
+      <div style={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        minWidth: 0,
+        background: '#04040f',
+      }}>
+        {/* Navbar */}
         <Navbar
           user={user}
           role={role}
@@ -181,14 +185,21 @@ export default function DashboardLayout({ user, role, onLogout }) {
           notices={notices}
           videos={videos}
         />
-        <main style={{ flex: 1, overflowY: 'auto', padding: '24px 28px' }}>
+
+        {/* Content */}
+        <main style={{
+          flex: 1,
+          overflowY: 'auto',
+          padding: '28px',
+          background: '#04040f',
+        }}>
           <AnimatePresence mode="wait">
             <motion.div
               key={activeNav}
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
             >
               {renderPage()}
             </motion.div>
